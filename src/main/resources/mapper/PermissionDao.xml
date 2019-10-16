@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhifei.blog.dao.PermissionDao">
+    <select id="getPermissionsByUserName" resultType="com.zhifei.blog.entity.Permission">
+        SELECT
+			permission_name
+		FROM
+			user_role,
+			role_permission,
+			permission
+		WHERE
+			user_role.role_id = role_permission.role_id
+			AND role_permission.permission_id = permission.permission_id
+			AND user_id in ( SELECT user_id FROM `user` WHERE user_name = #{permissionId} )
+    </select>
+</mapper>

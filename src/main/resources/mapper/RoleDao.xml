@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhifei.blog.dao.RoleDao">
+    <select id="getRolesByUserName" resultType="com.zhifei.blog.entity.Role">
+        SELECT *
+        FROM role
+        WHERE role_id IN (
+            SELECT user_role.role_id
+            FROM user_role
+            WHERE user_id IN (
+                SELECT user_id
+                FROM USER
+                WHERE user_name = #{userName}
+            )
+        )
+    </select>
+    <insert id="setRolesByUserId" parameterType="com.zhifei.blog.entity.UserRole" useGeneratedKeys="true" keyProperty="userRole.id">
+        INSERT INTO user_role(id,user_id,role_id)
+        VALUES(#{userRole.id},#{userRole.userId},#{userRole.roleId})
+    </insert>
+</mapper>

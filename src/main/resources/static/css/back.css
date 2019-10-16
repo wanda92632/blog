@@ -1,0 +1,131 @@
+/*body, h1, h2, h3, h4, h5, h6, p, dl, dd, ul, ol, form, input, textarea, th, td, select {*/
+/*margin: 0;*/
+/*padding: 0;*/
+/*}*/
+body {
+    color: #3C3C3C;
+    background-color: #F5F5F5;
+}
+
+em {
+    font-style: normal;
+}
+
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+table {
+    border-collapse: collapse;
+}
+
+input, textarea {
+    outline: none;
+}
+
+textarea {
+    resize: none;
+    overflow: auto;
+}
+
+
+.icon-nav {
+    width: 45px;
+    height: 45px;
+}
+
+.nav-button{
+    outline: 0 !important;
+}
+.icon-article {
+    width: 20px;
+    height: 20px;
+}
+
+.input {
+    border: 0;
+    outline: none;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.introduction {
+    height: 45px;
+    font-size: 14px;
+}
+
+.text-size-12 {
+    font-size: 12px
+}
+
+.text-size-14 {
+    font-size: 14px
+}
+
+a {
+    text-decoration: none;
+}
+
+.article-border{
+    border-left-style: solid;
+    border-left-width: .15rem;
+    border-right: 0;
+    border-top: 0;
+    border-bottom: 0;
+    border-radius: .25rem;
+}
+
+.indentation {
+    text-indent: 32px
+}
+
+.over-1 {
+    /* 元素溢出内容  隐藏 */
+    overflow: hidden;
+    /* 元素溢出打点 */
+    text-overflow: ellipsis;
+}
+
+.over-2 {
+    /* 元素溢出内容  隐藏 */
+    overflow: hidden;
+    /* 设置文本不折行 */
+    white-space: nowrap;
+    /* 元素溢出打点 */
+    text-overflow: ellipsis;
+}
+
+a:link {
+    text-decoration: none;
+    color: #3C3C3C;
+}
+
+a:visited {
+    text-decoration: none;
+    color: #3C3C3C;
+}
+
+a:hover {
+    color: #ff5000;
+    text-decoration: none;
+}
+
+a:active {
+    text-decoration: none;
+    color: #ff5000;
+}
+
+.toolbar {
+    background-color: white;
+    border: 1px solid #ccc;
+}
+
+.text {
+    background-color: white;
+    border: 1px solid #ccc;
+    height: 800px;
+}

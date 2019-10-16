@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhifei.blog.dao.CommentDao">
+    <!--查询评论-->
+    <select id="getComment" resultType="com.zhifei.blog.entity.Comment">
+        SELECT *
+        FROM `comment`
+        WHERE article_id = #{articleId}
+        ORDER BY comment_id DESC
+        LIMIT #{begin},9;
+    </select>
+
+    <!--写入评论-->
+    <insert id="setComment" useGeneratedKeys="true" keyProperty="comment.commentId">
+        INSERT INTO comment(comment_id, article_id, user_id, user_nickname, user_icon, comment_content,
+                            comment_creation_time)
+        values (#{comment.commentId}, #{comment.articleId}, #{comment.userId}, #{comment.userNickname},
+                #{comment.userIcon}, #{comment.commentContent}, #{comment.commentCreationTime})
+    </insert>
+
+    <!--查询文章评论数-->
+    <select id="getCommentByArticleId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM comment
+        WHERE article_id = #{articleId}
+    </select>
+
+    <!--查询文章总数-->
+    <select id="queryCommentSum" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM comment
+    </select>
+
+<!--查询最新评论-->
+    <select id="queryLatestComment" resultType="com.zhifei.blog.entity.Comment">
+        SELECT
+            *
+        FROM
+            comment
+        GROUP BY comment_id DESC
+        LIMIT 5;
+    </select>
+</mapper>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhifei.blog.dao.ArticleDao">
+    <resultMap id="articleMap" type="com.zhifei.blog.entity.Article">
+        <id column="article_id" property="articleId"/>
+        <result column="title" property="title"/>
+        <result column="introduction" property="introduction"/>
+        <result column="content" property="content"/>
+        <result column="viewed" property="viewed"/>
+        <result column="comment_id" property="commentId"/>
+        <result column="collection" property="collection"/>
+        <result column="is_comment" property="isComment"/>
+        <result column="creation_time" property="creationTime"/>
+        <result column="update_time" property="updateTime"/>
+        <association property="user" column="user_id" javaType="com.zhifei.blog.entity.User">
+            <id column="user_id" property="userId"/>
+            <result column="user_name" property="userName"/>
+            <result column="user_nickname" property="userNickname"/>
+            <result column="user_icon" property="userIcon"/>
+        </association>
+        <association property="category" column="category_id" javaType="com.zhifei.blog.entity.Category">
+            <id column="category_id" property="categoryId"/>
+            <result column="category_name" property="categoryName"/>
+            <result column="category_color" property="categoryColor"/>
+        </association>
+    </resultMap>
+
+    <!--查看文章-文章ID-->
+    <select id="getArticle" resultMap="articleMap" resultType="com.zhifei.blog.entity.Article">
+        SELECT *
+        FROM article,
+             user,
+             category
+        WHERE article_id = #{articleId}
+          AND article.user_id = `user`.user_id
+          AND article.category_id = category.category_id
+    </select>
+    <!--提交文章-->
+    <insert id="setArticle" useGeneratedKeys="true" keyProperty="article.articleId">
+        INSERT INTO article(article_id, user_id, category_id, title, introduction, content, creation_time)
+        VALUES (#{article.articleId}, #{article.user.userId}, #{article.category.categoryId}, #{article.title},
+                #{article.introduction},
+                #{article.content}, #{article.creationTime})
+    </insert>
+    <update id="updateArticle">
+        UPDATE article
+        <set>
+            <if test="article.title!=null">title=#{article.title},</if>
+            <if test="article.introduction!=null">introduction=#{article.introduction},</if>
+            <if test="article.content!=null">content=#{article.content},</if>
+            <if test="article.updateTime!=null">update_time=#{article.updateTime},</if>
+            <if test="article.category!=null">category_id=#{article.category.categoryId}</if>
+        </set>
+        WHERE article_id=#{article.articleId}
+    </update>
+    <!--查询文章总数-->
+    <select id="getArticleNumber" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM article
+    </select>
+    <!--更新文章已阅读数-->
+    <update id="addArticleViewed">
+        UPDATE article
+        SET viewed=viewed + 1
+        WHERE article_id = #{articleId}
+    </update>
+    <!--获取主页文章-->
+    <select id="getHomeArticle" resultMap="articleMap" resultType="com.zhifei.blog.entity.Article">
+        SELECT *
+        FROM article,
+             `user`,
+             category
+        WHERE article.user_id = `user`.user_id
+          AND article.category_id = category.category_id
+          AND article_id != 6
+        ORDER BY creation_time DESC
+        LIMIT #{begin},9;
+    </select>
+    <!--获取用户所有文章-->
+    <select id="getAllArticleByUserID" resultMap="articleMap" resultType="com.zhifei.blog.entity.Article">
+        SELECT *
+        FROM article,
+             `user`,
+             category
+        WHERE article.user_id = `user`.user_id
+          AND article.category_id = category.category_id
+          AND article.user_id = #{userId}
+    </select>
+    <!--删除文章-->
+    <delete id="deleteArticle">
+        DELETE
+        FROM article
+        WHERE article_id = #{articleId}
+    </delete>
+    <!--查找文章-标题-->
+    <select id="queryArticleByTitle" resultMap="articleMap" resultType="com.zhifei.blog.entity.Article">
+        SELECT *
+        FROM article,
+             `user`,
+             category
+        WHERE article.user_id = `user`.user_id
+          AND article.category_id = category.category_id
+          AND article.title REGEXP #{title}
+        ORDER BY creation_time DESC
+        LIMIT #{begin},9;
+    </select>
+    <!--查找文章-标题-数量-->
+    <select id="queryArticleByTitleCount" resultType="int">
+        SELECT count(1)
+        FROM article,
+             `user`,
+             category
+        WHERE article.user_id = `user`.user_id
+          AND article.category_id = category.category_id
+          AND article.title REGEXP #{title}
+    </select>
+    <!--查找文章-类别-->
+    <select id="queryArticleByCategory" resultMap="articleMap" resultType="com.zhifei.blog.entity.Article">
+        SELECT *
+        FROM article,
+             `user`,
+             category
+        WHERE article.user_id = `user`.user_id
+          AND article.category_id = category.category_id
+          AND category_name REGEXP #{categoryName}
+        ORDER BY creation_time DESC
+        LIMIT #{begin},9
+    </select>
+    <!--查找文章-类别数量-->
+    <select id="queryArticleByCategoryCount" resultType="int">
+        SELECT count(1)
+        FROM article,
+             `user`,
+             category
+        WHERE article.user_id = `user`.user_id
+          AND article.category_id = category.category_id
+          AND category_name = #{categoryName}
+    </select>
+    <!--查询文章总数-->
+    <select id="queryArticleSum" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM article
+    </select>
+    <!--查询最新文章-->
+    <select id="queryLatestArticle" resultMap="articleMap" resultType="com.zhifei.blog.entity.Article">
+        SELECT *
+        FROM article
+        GROUP BY article_id DESC
+        LIMIT 5;
+    </select>
+    <!--查询热门文章-->
+    <select id="queryPopularArticle" resultMap="articleMap" resultType="com.zhifei.blog.entity.Article">
+        SELECT *
+        FROM article
+        GROUP BY viewed DESC
+        LIMIT 5;
+    </select>
+    <!--查询用户发表文章数-->
+    <select id="queryArticleSumByUserId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM article
+        WHERE user_id = #{userId}
+    </select>
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhifei.blog.dao.ArticleCategoryDao">
+    <insert id="setArticleCategory" useGeneratedKeys="true" keyProperty="articleCategory.articleCategoryId">
+        INSERT INTO article_category(article_category_id,article_id,category_id)
+        VALUE (#{articleCategory.articleCategoryId},#{articleCategory.articleId},#{articleCategory.categoryId})
+    </insert>
+    <delete id="deleteRelationByArticleId">
+        DELETE
+        FROM article_category
+        WHERE article_id=#{articleId}
+    </delete>
+</mapper>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhifei.blog.dao.UserDao">
+    <!--匹配登录口令-->
+    <select id="matchUserNumber" resultType="java.lang.Integer">
+       SELECT count(*)
+       FROM user
+       WHERE user_name=#{userName} and password=#{password}
+    </select>
+    <!--查询用户信息-->
+    <select id="findUserByUserName" resultType="com.zhifei.blog.entity.User">
+		SELECT *
+        FROM user
+         WHERE user_name=#{userName}
+	</select>
+    <!--添加登录信息-->
+    <update id="upUserData" parameterType="com.zhifei.blog.entity.User">
+		UPDATE user
+        <set>
+            <if test="password != null">password=#{password},</if>
+            <if test="salt != null">salt=#{salt},</if>
+            <if test="userNickname != null">user_nickname=#{userNickname},</if>
+            <if test="userEmail != null">user_email=#{userEmail},</if>
+            <if test="lastVisit != null">last_visit=#{lastVisit},</if>
+            <if test="lastIP != null">last_iP=#{lastIP},</if>
+            <if test="userState != null">user_state=#{userState},</if>
+        </set>
+		WHERE
+			user_id=#{userId}
+	</update>
+    <select id="getUserData" resultType="com.zhifei.blog.entity.User">
+        SELECT *
+        FROM user
+        WHERE user_id=#{userId}
+    </select>
+    <!--用户注册-->
+    <insert id="userRegistered" parameterType="com.zhifei.blog.entity.User" useGeneratedKeys="true" keyProperty="user.userId" >
+        INSERT INTO user(user_id,user_name,password,user_nickname,user_email,user_icon,salt)
+        VALUES(#{user.userId},#{user.userName},#{user.password},#{user.userNickname},#{user.userEmail},#{user.userIcon},#{user.salt})
+    </insert>
+<!--查询用户数-->
+    <select id="queryUserSum" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM user
+    </select>
+<!--修改用户头像-->
+    <select id="upUserIcon">
+        UPDATE user
+        set user_icon=#{userIcon}
+        WHERE user_id=#{userId}
+    </select>
+</mapper>
