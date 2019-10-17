@@ -193,7 +193,7 @@
                                     <div id="div1" class="toolbar">
                                     </div>
                                     <div id="div2" class="text">
-                                        <p><#if article?? >${article.content}</#if></p>
+                                        <#if article?? >${article.content}</#if>
                                     </div>
                                 </div>
                             </div>
