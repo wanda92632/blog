@@ -24,7 +24,7 @@ public class UploadUtil {
     private static final String bucket = "zhifei-blog";    //bucket名
     private static final String key = null;    //默认不指定key的情况下，以文件内容的hash值作为文件名
     private static final Auth auth = Auth.create(accessKey, secretKey);
-    public static final String prefix = "http://cloud.wanda92632.top/";
+    public static final String prefix = "http://cloud.wanzhifei.com/";
 
     /**
      * 上传文件，并返回地址
